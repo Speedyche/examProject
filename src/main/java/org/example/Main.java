@@ -70,7 +70,6 @@ public class Main {
         }
 
     private static void searchCustomer(Scanner sc) {
-
     }
 
     private static void getAllCustomers(Scanner sc) {
@@ -78,15 +77,24 @@ public class Main {
     }
 
     private static void writeMenuOptions() {
+        System.out.println("-------------------------");
+        System.out.println("Evidence pojištěných");
+        System.out.println("-------------------------");
+
+        System.out.println("Vyberte si akci: ");
+        System.out.println("1 - Přidat nového pojištěného");
+        System.out.println("2 - Vypsat všechny pojištěné");
+        System.out.println("3 - Vyhledat pojištěného");
+        System.out.println("4 - Konec");
     }
 
 
-    private static String addCustomer(Scanner sc) throws SQLException {
+    private static void addCustomer(Scanner sc) throws SQLException {
         System.out.println("Give me a name");
         String name = getAndValidateName(sc);
 
         System.out.println("Give me a surname");
-        String surname = getAndValidateName(sc);
+        String surname = getAndValidateSurname(sc);
 
         System.out.println("Give me a phone number");
         String phoneNumber = getAndValidatePhoneNumber(sc);
@@ -112,90 +120,46 @@ public class Main {
 
             System.out.println("Jméno: " + name + "/nPříjmení: " + surname + "/nTelefon: " + phoneNumber + "/nVěk: " + age);
         }
+    }
 
+    private static String getAndValidateSurname(Scanner sc) {
+        String surname = sc.nextLine();
 
-        private static String getAndValidateAge (Scanner sc){
-            age = sc.nextLine();
-
-            if (!StringUtils.isNumeric(age)) {
-                throw new IllegalStateException("Bad request. Scope phoneNumber.");
-            }
-
-            return age;
+        if (surname == null || surname.length() > 55) {
+            throw new IllegalStateException("Bad request. Scope name/surname.");
         }
 
-        public static String getAndValidatephoneNumber (Scanner sc){
-            String phoneNumber = sc.nextLine();
-
-            if (phoneNumber == null || phoneNumber.length() > 13 || !phoneNumber.startsWith("+")) {
-                throw new IllegalStateException("Bad request. Scope phoneNumber.");
-            }
-
-            return phoneNumber;
-        }
-
-        private static String getAndValidateName (Scanner sc){
-            String name = sc.nextLine();
-
-            if (name == null || name.length() > 55) {
-                throw new IllegalStateException("Bad request. Scope name/surname.");
-            }
-
-            return name;
-        }
-
-        private static String getAndValidateSurname (Scanner sc){
-            String surname = sc.nextLine();
-
-            if (name == null || surname.length() > 55) {
-                throw new IllegalStateException("Bad request. Scope name/surname.");
-            }
-
-            return surname;
-        }
-
-        private static void writeMenuOptions () {
-            System.out.println("-------------------------");
-            System.out.println("Evidence pojištěných");
-            System.out.println("-------------------------");
-
-            System.out.println("Vyberte si akci: ");
-            System.out.println("1 - Přidat nového pojištěného");
-            System.out.println("2 - Vypsat všechny pojištěné");
-            System.out.println("3 - Vyhledat pojištěného");
-            System.out.println("4 - Konec");
-        }
-
-
+        return surname;
     }
 
     private static String getAndValidatePhoneNumber(Scanner sc) {
-        return null;
+        String phoneNumber = sc.nextLine();
+
+        if (phoneNumber == null || phoneNumber.length() > 13 || !phoneNumber.startsWith("+")) {
+            throw new IllegalStateException("Bad request. Scope phoneNumber.");
+        }
+
+        return phoneNumber;
     }
 
     private static String getAndValidateName(Scanner sc) {
-        return null;
+        String name = sc.nextLine();
+
+        if (name == null || name.length() > 55) {
+            throw new IllegalStateException("Bad request. Scope name/surname.");
+        }
+
+        return name;
     }
 
     private static String getAndValidateAge(Scanner sc) {
-        return null;
-    }
+        String age = sc.nextLine();
 
-    public static void {
-        String url = "jdbc:mysql://localhost:3306/customers";
-        String username = "root";
-        String password = "";
-        String tableName = "customers";
-        String searchName = "John";
-        String searchSurname = "Doe";
-
-        try {
-            DatabaseReader reader = new DatabaseReader(url, username, password);
-            reader.searchCustomer(tableName, searchName, searchSurname);
-            reader.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (!StringUtils.isNumeric(age)) {
+            throw new IllegalStateException("Bad request. Scope phoneNumber.");
         }
+
+        return age;
     }
 }
 
