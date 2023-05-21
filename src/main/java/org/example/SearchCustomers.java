@@ -1,35 +1,42 @@
 package org.example;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.jetbrains.annotations.NotNull;
+
+import java.sql.*;
+import java.util.Scanner;
 
 public class SearchCustomers {
     private Connection connection;
 
-    public void searchCustomer(String tableName, String name, String surname) throws SQLException {
-        String query = "SELECT * FROM " + tableName + " WHERE name = ? AND surname = ?";
+    public static void searchCustomer(@NotNull Scanner sc) throws SQLException {
+        System.out.println("Zadejte jméno nebo příjmení pojištěnce: ");
+        String searchQuery = sc.nextLine();
 
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, name);
-        statement.setString(2, surname);
-
-        ResultSet resultSet = statement.executeQuery();
-
-        // Process the result set
-        while (resultSet.next()) {
-            String customerName = resultSet.getString("name");
-            String customerSurname = resultSet.getString("surname");
-            // Add more columns as per your table structure
-
-            System.out.println("Name: " + customerName + ", Surname: " + customerSurname);
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/customers", "root", "");
+        PreparedStatement query;
+        try {
+            query = connection.prepareStatement("SELECT * FROM customer WHERE name LIKE ? OR surname LIKE ?");
+            query.setString(1, "%" + searchQuery + "%");
+            query.setString(2, "%" + searchQuery + "%");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
-        // Close resources
-        resultSet.close();
-        statement.close();
+        ResultSet result = query.executeQuery();
+
+        if (result.next()) {
+            System.out.println("Nalezené shody v pojištěncích: ");
+            do {
+                String name = result.getString("name");
+                String surname = result.getString("surname");
+                String phoneNumber = result.getString("phoneNumber");
+                int age = result.getInt("age");
+                System.out.println("Jméno: " + name + ", Příjmení: " + surname + ", Telefon: " + phoneNumber + ", Věk: " + age);
+            } while (result.next());
+        } else {
+            System.out.println("Nebyly nalezeny žádné záznamy.");
+        }
     }
 
     public void close() throws SQLException {
