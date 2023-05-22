@@ -32,7 +32,7 @@ public class SearchCustomers {
                 String surname = result.getString("surname");
                 String phoneNumber = result.getString("phoneNumber");
                 int age = result.getInt("age");
-                System.out.println("Jméno: " + name + ", Příjmení: " + surname + ", Telefon: " + phoneNumber + ", Věk: " + age);
+                System.out.println(MessageFormat.format("Jméno: {0}\nPříjmení: {1}\nTelefon: {2}\nVěk: {3}\n", name, surname, phoneNumber, age));
             } while (result.next());
         } else {
             System.out.println("Nebyly nalezeny žádné záznamy.");
