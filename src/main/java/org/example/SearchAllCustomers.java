@@ -23,7 +23,7 @@ public class SearchAllCustomers {
             String phoneNumber = outcome.getString("phoneNumber");
             int age = outcome.getInt("age");
 
-            System.out.println("Jméno: " + name + " Příjmení: " + surname + " Telefon: " + phoneNumber + " Věk: " + age);
+            System.out.println(MessageFormat.format("Jméno: {0}\nPříjmení: {1}\nTelefon: {2}\nVěk: {3}\n", name, surname, phoneNumber, age));
         }
     }
 
